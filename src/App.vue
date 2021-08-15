@@ -4,7 +4,7 @@
       <label for="ticketId" class="mb-2 mx-2">Enter your Ticket ID</label>
       <div class="flex">
         <input
-          class="w-3/12 rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
+          class="w-full rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
           placeholder="Enter your Ticket ID - e.g. WSBA-1234"
           name="ticketId"
           v-model="data.id"
