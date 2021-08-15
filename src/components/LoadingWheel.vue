@@ -1,5 +1,5 @@
 <template>
-  <div class="loader mx-auto"></div>
+  <div class="loader mx-auto my-5"></div>
 </template>
 
 <style scoped>
