@@ -1,62 +1,57 @@
 <template>
-  <div class="container mx-auto w-full">
+  <div class="container mx-auto px-4">
     <form @submit.prevent="submitData">
-      <label for="ticketId">Enter your Ticket ID</label>
-      <input
-        class=" rounded-sm border-2 border-gray-300 block py-2 px-2 text-gray-400"
-        placeholder="Ticket ID e.g. WSBA-1234"
-        name="ticketId"
-        v-model="data.id"
-      />
+      <label for="ticketId" class="mb-2 mx-2">Enter your Ticket ID</label>
+      <div class="flex">
+        <input
+          class="w-3/12 rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
+          placeholder="Enter your Ticket ID - e.g. WSBA-1234"
+          name="ticketId"
+          v-model="data.id"
+        />
 
-      <button
-        class="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 my-3 rounded"
-        type="submit">
-        Check
-      </button>
+        <button
+          class="text-white font-bold py-2 px-4 my-3"
+          type="submit">
+          Check
+        </button>
+      </div>
     </form>
 
     <!-- Not Found message -->
-    <div class="container mx-auto my-5" v-if="notFound">
-      <p class="font-light text-gray-500">Ticket with the ID was not found</p>
-    </div>
+    <not-found v-if="notFound"></not-found>
+
+    <!-- Loading wheel -->
+    <loading-wheel v-if="isLoading"></loading-wheel>
 
     <!-- Ticket DATA -->
-    <div
-      class="container mx-auto my-5 grid grid-cols-2 gap-2"
-      v-if="workItem.id && !notFound && !isLoading"
-    >
-      <div
-        v-for="(value, name) in workItem"
-        v-bind:key="name"
-        class="bg-gray-200 pl-2 py-2 rounded-md hover:bg-gray-300"
-      >
-        <p class="font-medium text-gray-500">{{ name.toUpperCase() }}</p>
-        <p class="font-light text-gray-500">{{ value ? value : "n/a" }}</p>
-      </div>
-    </div>
+    <search-results :data=workItem v-if="workItem.id && !notFound && !isLoading"></search-results>
 
-    <div class="loader mx-auto" v-if="isLoading"></div>
   </div>
 </template>
 
 <script>
 import { reactive, ref } from "vue";
 import axios from "axios";
+import LoadingWheel from "./components/LoadingWheel.vue";
+import SearchResults from "./components/SearchResults.vue";
+import NotFound from "./components/NotFound.vue";
 
 export default {
+  components: { LoadingWheel, SearchResults, NotFound },
   setup() {
     // Create object variable for the form inputs
     var data = reactive({
       id: null,
     });
 
+    // Toggle the error message
     var notFound = ref(false);
+    // Toggle the loading animation
+    var isLoading = ref(false);
 
-    var isLoading = ref(false)
-
-    const apiUrl =
-      "https://prod-15.westeurope.logic.azure.com:443/workflows/3d2695d1848a400fa51cd37dc10569c5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=b-nzaMmrI_8ma9-nI6cHDRdL3t4g1tAz5G65e7bqOfc";
+    // Logic apps url hook
+    const apiUrl = "https://prod-15.westeurope.logic.azure.com:443/workflows/3d2695d1848a400fa51cd37dc10569c5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=b-nzaMmrI_8ma9-nI6cHDRdL3t4g1tAz5G65e7bqOfc";
 
     let workItem = reactive({
       id: null,
@@ -71,13 +66,18 @@ export default {
       sprint: null,
     });
 
+    // MAKING the HTTP request to LogicApps
     async function submitData() {
+      // Mantain control variables before every new search
       this.notFound = false;
       this.isLoading = true
+
+      // Consolidate user's input
       var ticket = {
-        id: parseInt(data.id.replace('WSBA-', ''))
+        id: adjustInput()
       }
 
+      // Call the LogicApps hook
       await axios
         .post(apiUrl, ticket, {
           headers: {
@@ -107,35 +107,32 @@ export default {
         });
     }
 
+    function adjustInput() {
+      // put the input to UpperCase
+      var ticketNumber = data.id.toUpperCase();
+      // remove the ticket prefix - add more rules if needed e.g. WSBB
+      ticketNumber = parseInt(ticketNumber.replace('WSBA-', ''));
+
+      return ticketNumber;
+    }
+
     return { submitData, data, workItem, notFound, isLoading };
   },
 };
 </script>
 
-<style>
-/* TBD */
-label {
-  display: block;
-}
+<style scoped>
+  /* TBD */
+  label {
+    display: block;
+  }
 
-.loader {
-  border: 8px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 8px solid rgb(46, 194, 46);
-  width: 50px;
-  height: 50px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
+  button {
+    /* Henkel Red used for OneWeb*/
+    background-color: rgb(225, 0, 15) !important; 
+  }
 
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+  button:hover { 
+    background-color: #84010a !important;
+  }
 </style>
