@@ -87,16 +87,7 @@ export default {
         .then((response, ) => {
           console.log(response);
           if (response.status == 200) {
-            this.workItem.id = response.data.id;
-            this.workItem.sbu = response.data.sbu;
-            this.workItem.title = response.data.title;
-            this.workItem.state = response.data.state;
-            this.workItem.deadline = response.data.deadline;
-            this.workItem.priority = response.data.priority;
-            this.workItem.primaryContact = response.data.primaryContact;
-            this.workItem.secondaryContact = response.data.secondaryContact;
-            this.workItem.brand = response.data.brand;
-            this.workItem.sprint = response.data.sprint;
+            this.workItem = response.data
           } else {
             this.notFound = true;
           }
@@ -121,7 +112,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
   /* TBD */
   label {
     display: block;
