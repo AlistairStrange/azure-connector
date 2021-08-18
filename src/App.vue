@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto px-4">
     <form @submit.prevent="submitData">
-      <label for="ticketId" class="mb-2 mx-2">Enter your Ticket ID</label>
+      <label for="ticketId" class="mb-2 text-gray-500 font-medium">Enter your Ticket ID</label>
       <div class="flex">
         <input
-          class="w-full rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
+          class="w-10/12 rounded-md bg-gray-100 block px-2 mr-2 text-gray-400"
           placeholder="Enter your Ticket ID - e.g. WSBA-1234"
           name="ticketId"
           v-model="data.id"
