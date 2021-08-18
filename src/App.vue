@@ -1,31 +1,33 @@
 <template>
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto px-4 mt-4">
     <form @submit.prevent="submitData">
-      <label for="ticketId" class="mb-2 text-gray-500 font-medium">Enter your Ticket ID</label>
-      <div class="flex">
+      <!-- <label for="ticketId" class="mb-2 text-gray-500 font-medium">Search</label> -->
+      <div class="grid grid-cols-12 gap-2">
         <input
-          class="w-10/12 rounded-md bg-gray-100 block px-2 mr-2 text-gray-400"
+          class="col-span-10 rounded-md bg-gray-100 hover:bg-gray-200 block px-2 py-4 mr-2 text-gray-400 float-left"
           placeholder="Enter your Ticket ID - e.g. WSBA-1234"
           name="ticketId"
           v-model="data.id"
         />
 
         <button
-          class="text-white font-bold py-2 px-4 my-3"
+          class="text-white font-bold py-2 px-4 my-3 col-span-2"
           type="submit">
           Check
         </button>
       </div>
     </form>
 
-    <!-- Not Found message -->
-    <not-found v-if="notFound"></not-found>
+    <div class="block">
+      <!-- Not Found message -->
+      <not-found v-if="notFound"></not-found>
 
-    <!-- Loading wheel -->
-    <loading-wheel v-if="isLoading"></loading-wheel>
+      <!-- Loading wheel -->
+      <loading-wheel v-if="isLoading"></loading-wheel>
 
-    <!-- Ticket DATA -->
-    <search-results :data=workItem v-if="workItem.id && !notFound && !isLoading"></search-results>
+      <!-- Ticket DATA -->
+      <search-results :data=workItem v-if="workItem.id && !notFound && !isLoading"></search-results>
+    </div>
 
   </div>
 </template>

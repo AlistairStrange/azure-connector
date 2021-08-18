@@ -3,7 +3,7 @@
     <div
       v-for="(value, name) in ticketData"
       v-bind:key="name"
-      class="bg-gray-200 pl-2 py-2 rounded-md hover:bg-gray-300"
+      class="bg-gray-100 pl-2 py-2 rounded-md hover:bg-gray-200"
     >
       <p class="font-medium text-gray-500">{{ name.toUpperCase() }}</p>
       <p class="font-light text-gray-500">
@@ -13,7 +13,7 @@
 
     <!-- Preview links full col width -->
     <div
-      class="col-span-full bg-gray-200 pl-2 py-2 rounded-md hover:bg-gray-300 gap-2"
+      class="col-span-full bg-gray-100 pl-2 py-2 rounded-md hover:bg-gray-200 gap-2"
     >
       <p class="font-medium text-gray-500">PREVIEW LINKS</p>
       <span
@@ -24,17 +24,17 @@
     </div>
   </div>
   
-  <p class="font-medium text-gray-500 float-right cursor-pointer" @click="triggerComments" v-if=!showComments>+ Add comment</p>
+  <p class="font-medium text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="triggerComments" v-if=!showComments>+ Add comment</p>
   <!-- Comment Section -->
-  <comments @hide-comments="triggerComments" v-if=showComments :id=ticketData.id></comments>
+  <add-comment @hide-comments="triggerComments" v-if=showComments :id=ticketData.id></add-comment>
 </template>
 
 <script>
 import { reactive, ref } from "vue";
-import Comments from "./Comments.vue";
+import AddComment from "./AddComment.vue";
 
 export default {
-  components: { Comments},
+  components: { AddComment},
   props: {
     data: Object,
   },
