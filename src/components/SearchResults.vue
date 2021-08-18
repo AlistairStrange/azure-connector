@@ -23,8 +23,10 @@
       </span>
     </div>
   </div>
+  
+  <p class="font-medium text-gray-500 float-right cursor-pointer" @click="triggerComments" v-if=!showComments>+ Add comment</p>
   <!-- Comment Section -->
-  <comments :id=ticketData.id></comments>
+  <comments @hide-comments="triggerComments" v-if=showComments :id=ticketData.id></comments>
 </template>
 
 <script>
@@ -53,9 +55,17 @@ export default {
 
     const previewLinks = ref(props.data.previews);
 
+    var showComments = ref(false);
+
+    function triggerComments(){
+      showComments.value = !showComments.value;
+    }
+
     return {
       ticketData,
       previewLinks,
+      showComments,
+      triggerComments,
     };
   },
 };
