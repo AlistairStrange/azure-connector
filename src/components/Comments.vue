@@ -1,34 +1,35 @@
 <template>
-  <div class="w-6/12 container my-5 px-4">
+  <div class="w-6/12 container my-5 px-4 bg-gray-200 py-2 rounded-md float-right">
+    <p class="text-gray-500 float-right cursor-pointer" @click="hideComments">Close</p>
     <form @submit.prevent="submitComment">
       <!--Email  -->
-        <label for="email" class="mb-2 mx-2">From</label>
+        <label for="email" class="mb-2 mx-2 font-medium text-gray-500">From</label>
         <input
-          class="rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
+          class="rounded-md bg-gray-100 block px-2 py-2 mx-2 mb-2 text-gray-400"
           placeholder="Enter your email address"
           name="email"
           type="email"
-          v-model="comment.from"
+          v-model="comment.email"
         />
 
         <!-- Text -->
-        <label for="comment" class="mb-2 mx-2">Text</label>
+        <label for="comment" class="mb-2 mx-2 font-medium text-gray-500">Text</label>
         <textarea
-          class="w-full rounded-sm border-2 border-gray-300 block px-2 mx-2 text-gray-400"
+          class="w-11/12 rounded-md bg-gray-100 block px-2 mx-2 text-gray-400"
           name="comment"
           v-model="comment.text"
           placeholder="Enter your comment"
           rows="5"
         />
 
-        <button class="text-white font-bold py-2 px-4 my-3" type="submit">
+        <button class="text-white font-bold py-2 px-4 mx-2 my-4" v-if="!isLoading" type="submit">
           Submit
         </button>
     </form>
 
     <loading-wheel v-if="isLoading"></loading-wheel>
-    <p v-if="success">Success</p>
-    <p v-if="failure">Failure</p>
+    <p v-if="success" class="text-gray-500 font-light mx-2">Comment was successfully posted</p>
+    <p v-if="failure" class="text-gray-500 font-light mx-2">Ooops, something went wrong</p>
   </div>
 </template>
 
@@ -42,7 +43,8 @@ export default {
   props: {
     id: Number,
   },
-  setup(props) {
+  emits: ['hide-comments'],
+  setup(props, {emit}) {
     var comment = reactive({
       email: null,
       text: null,
@@ -55,8 +57,12 @@ export default {
     const apiUrl =
       "https://prod-240.westeurope.logic.azure.com:443/workflows/1f4be62774a24ff49d688af3dc78dcaf/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AFvlS67qtIoUDeTCJBs94t1ywQDNojG7BoKPfiCm-dQ";
 
+    function hideComments(){
+      emit("hide-comments");
+    }
+
     async function submitComment() {
-      if (comment.email && comment.text) {
+      if (comment.email.length >= 5 && comment.text.length > 0) {
         this.isLoading = true;
 
         await axios
@@ -85,6 +91,7 @@ export default {
     return {
       comment,
       submitComment,
+      hideComments,
       isLoading,
       success,
       failure,
