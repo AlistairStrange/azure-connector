@@ -4,14 +4,14 @@
       <!-- <label for="ticketId" class="mb-2 text-gray-500 font-medium">Search</label> -->
       <div class="grid grid-cols-12 gap-2">
         <input
-          class="col-span-10 rounded-md bg-gray-100 hover:bg-gray-200 block px-2 py-4 mr-2 text-gray-400 float-left"
+          class="col-span-9 rounded-md bg-gray-100 hover:bg-gray-200 block px-2 py-4 mr-2 text-gray-400"
           placeholder="Enter your Ticket ID - e.g. WSBA-1234"
           name="ticketId"
           v-model="data.id"
         />
 
         <button
-          class="text-white font-bold py-2 px-4 my-3 col-span-2"
+          class="text-white font-bold py-2 px-4 my-3 col-span-3"
           type="submit">
           Check
         </button>
