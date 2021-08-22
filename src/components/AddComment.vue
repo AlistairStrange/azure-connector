@@ -3,7 +3,7 @@
     <p class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="hideComments">
       Close x
     </p>
-    <form @submit.prevent="submitComment">
+    <form @submit.prevent="submitComment" id="comments-section">
       <!--Email  -->
       <label for="email" class="mb-2 mx-2 font-medium text-gray-500">From</label>
       <input

@@ -11,13 +11,7 @@
     <preview-links :links="previewLinks ? previewLinks : 'n/a'"></preview-links>
   </div>
 
-  <p
-    class="font-medium text-gray-400 hover:text-gray-500 float-right cursor-pointer"
-    @click="triggerComments"
-    v-if="!showComments"
-  >
-    + Add comment
-  </p>
+  <add-comment-button @click="triggerComments" v-if="!showComments"> </add-comment-button>
 
   <!-- Comment Section -->
   <add-comment @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></add-comment>
@@ -28,9 +22,10 @@ import { reactive, ref } from "vue";
 import AddComment from "./AddComment.vue";
 import SingleResult from "./SingleResult.vue";
 import PreviewLinks from "./PreviewLinks.vue";
+import AddCommentButton from "./AddCommentButton.vue";
 
 export default {
-  components: { AddComment, SingleResult, PreviewLinks },
+  components: { AddComment, SingleResult, PreviewLinks, AddCommentButton },
   props: {
     data: Object,
   },
