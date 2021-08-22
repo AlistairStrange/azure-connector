@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="col-span-full cursor-pointer bg-gray-100 pl-2 py-2 rounded-md hover:bg-gray-200 gap-2"
-    @click="copy(previewLinks)"
-  >
+  <div class="col-span-full bg-gray-100 pl-2 py-2 rounded-md hover:bg-gray-200 gap-2">
+    <DocumentDuplicateIcon class="h-5 w-5 cursor-pointer text-gray-400 font-light float-right mr-3" @click="copy(previewLinks)" />
     <!-- Copied message -->
     <span class="text-gray-400 font-light float-right mr-3 animate-bounce" v-if="isCopied">Copied</span>
 
@@ -14,12 +12,13 @@
 <script>
 import { ref, watch } from "vue";
 import useClipboard from "vue-clipboard3";
+import { DocumentDuplicateIcon } from "@heroicons/vue/solid";
 
 export default {
   props: {
     links: String,
   },
-
+  components: { DocumentDuplicateIcon },
   setup(props) {
     const { toClipboard } = useClipboard();
 
@@ -29,7 +28,6 @@ export default {
     // Copy to clipboard
     async function copy(val) {
       try {
-        val = val.replace(/(<([^>]+)>)/gi, "");
         await toClipboard(val);
 
         // Trigger info message
@@ -57,7 +55,7 @@ export default {
 
 <style scoped>
 ul {
-    list-style: disclosure-closed;
-    list-style-position: inside;
+  list-style: disclosure-closed;
+  list-style-position: inside;
 }
 </style>

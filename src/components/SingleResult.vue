@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100 pl-2 py-2 rounded-md cursor-pointer hover:bg-gray-200" @click="copy(content)">
+  <div class="bg-gray-100 cursor-pointer pl-2 py-2 rounded-md hover:bg-gray-200" @click="copy(content)">
     <!-- Copied message -->
     <span class="text-gray-400 font-light float-right mr-3 animate-bounce" v-if="isCopied">Copied</span>
 
@@ -35,7 +35,7 @@ export default {
         await toClipboard(val);
 
         // Trigger info message
-        isCopied.value = true; 
+        isCopied.value = true;
       } catch (e) {
         console.error(e);
       }
@@ -44,7 +44,7 @@ export default {
     // Hide Copied info message after 3 seconds
     watch(() => {
       if (isCopied.value) {
-          setTimeout(() => isCopied.value = false, 2000);
+        setTimeout(() => (isCopied.value = false), 2000);
       }
     });
 
@@ -52,7 +52,7 @@ export default {
       name,
       content,
       isCopied,
-      copy
+      copy,
     };
   },
 };
