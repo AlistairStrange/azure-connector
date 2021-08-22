@@ -10,9 +10,7 @@
           v-model="data.id"
         />
 
-        <button
-          class="text-white font-bold py-2 px-4 my-3 col-span-3"
-          type="submit">
+        <button class="text-white font-bold py-2 px-4 my-3 col-span-3" type="submit">
           Check
         </button>
       </div>
@@ -26,9 +24,8 @@
       <loading-wheel v-if="isLoading"></loading-wheel>
 
       <!-- Ticket DATA -->
-      <search-results :data=workItem v-if="workItem.id && !notFound && !isLoading"></search-results>
+      <search-results :data="workItem" v-if="workItem.id && !notFound && !isLoading"></search-results>
     </div>
-
   </div>
 </template>
 
@@ -53,7 +50,8 @@ export default {
     var isLoading = ref(false);
 
     // Logic apps url hook
-    const apiUrl = "https://prod-15.westeurope.logic.azure.com:443/workflows/3d2695d1848a400fa51cd37dc10569c5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=b-nzaMmrI_8ma9-nI6cHDRdL3t4g1tAz5G65e7bqOfc";
+    const apiUrl =
+      "https://prod-15.westeurope.logic.azure.com:443/workflows/3d2695d1848a400fa51cd37dc10569c5/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=b-nzaMmrI_8ma9-nI6cHDRdL3t4g1tAz5G65e7bqOfc";
 
     let workItem = reactive({
       id: null,
@@ -72,12 +70,12 @@ export default {
     async function submitData() {
       // Mantain control variables before every new search
       this.notFound = false;
-      this.isLoading = true
+      this.isLoading = true;
 
       // Consolidate user's input
       var ticket = {
-        id: adjustInput()
-      }
+        id: adjustInput(),
+      };
 
       // Call the LogicApps hook
       await axios
@@ -86,10 +84,10 @@ export default {
             "Content-Type": "application/json",
           },
         })
-        .then((response, ) => {
+        .then((response) => {
           console.log(response);
           if (response.status == 200) {
-            this.workItem = response.data
+            this.workItem = response.data;
           } else {
             this.notFound = true;
           }
@@ -104,7 +102,7 @@ export default {
       // put the input to UpperCase
       var ticketNumber = data.id.toUpperCase();
       // remove the ticket prefix - add more rules if needed e.g. WSBB
-      ticketNumber = parseInt(ticketNumber.replace('WSBA-', ''));
+      ticketNumber = parseInt(ticketNumber.replace("WSBA-", ""));
 
       return ticketNumber;
     }
@@ -115,17 +113,17 @@ export default {
 </script>
 
 <style>
-  /* TBD */
-  label {
-    display: block;
-  }
+/* TBD */
+label {
+  display: block;
+}
 
-  button {
-    /* Henkel Red used for OneWeb*/
-    background-color: rgb(225, 0, 15) !important; 
-  }
+button {
+  /* Henkel Red used for OneWeb*/
+  background-color: rgb(225, 0, 15) !important;
+}
 
-  button:hover { 
-    background-color: #84010a !important;
-  }
+button:hover {
+  background-color: #84010a !important;
+}
 </style>

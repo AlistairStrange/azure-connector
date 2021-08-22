@@ -1,18 +1,11 @@
 <template>
-  <div
-    class="w-full container my-2 px-4 bg-gray-200 py-2 rounded-md float-right"
-  >
-    <p
-      class="text-gray-400 hover:text-gray-500 float-right cursor-pointer"
-      @click="hideComments"
-    >
+  <div class="w-full container my-2 px-4 bg-gray-200 py-2 rounded-md float-right">
+    <p class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="hideComments">
       Close x
     </p>
     <form @submit.prevent="submitComment">
       <!--Email  -->
-      <label for="email" class="mb-2 mx-2 font-medium text-gray-500"
-        >From</label
-      >
+      <label for="email" class="mb-2 mx-2 font-medium text-gray-500">From</label>
       <input
         class="w-8/12 rounded-md bg-gray-100 block px-2 py-2 mx-2 mb-2 text-gray-400"
         placeholder="Enter your email address"
@@ -22,9 +15,7 @@
       />
 
       <!-- Text -->
-      <label for="comment" class="mb-2 mx-2 font-medium text-gray-500"
-        >Text</label
-      >
+      <label for="comment" class="mb-2 mx-2 font-medium text-gray-500">Text</label>
       <textarea
         class="w-11/12 rounded-md bg-gray-100 block px-2 mx-2 text-gray-400"
         name="comment"
@@ -33,11 +24,7 @@
         rows="5"
       />
 
-      <button
-        class="text-white font-bold py-2 px-4 mx-2 my-4"
-        v-if="!isLoading"
-        type="submit"
-      >
+      <button class="text-white font-bold py-2 px-4 mx-2 my-4" v-if="!isLoading" type="submit">
         Submit
       </button>
     </form>
@@ -67,7 +54,6 @@ export default {
     var comment = reactive({
       email: null,
       text: null,
-      files: null,
       id: props.id,
     });
 
@@ -112,7 +98,6 @@ export default {
       comment,
       submitComment,
       hideComments,
-      onFileChange,
       isLoading,
       success,
       failure,
