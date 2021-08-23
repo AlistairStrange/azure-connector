@@ -32,16 +32,16 @@ export default {
 
   setup(props) {
     const ticketData = reactive({
-      id: props.data.id,
+      id: 'WSBA-' + props.data.id,
       sbu: props.data.sbu,
       title: props.data.title,
       state: props.data.state,
-      deadline: props.data.deadline,
+      deadline: props.data.deadline.split("T")[0], // remove Time info from timestamp
       priority: props.data.priority,
       sprint: props.data.sprint,
       brand: props.data.brand,
-      primaryContact: props.data.primaryContact,
-      secondaryContact: props.data.secondaryContact,
+      primaryContact: props.data.primaryContact.replaceAll(";", "; "), //properly format multiple mail adresses in a single field
+      secondaryContact: props.data.secondaryContact ? props.data.secondaryContact.replaceAll(";", "; ") : props.data.secondaryContact,
     });
 
     const previewLinks = ref(props.data.previews);
