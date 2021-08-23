@@ -10,8 +10,8 @@
           v-model="data.id"
         />
 
-        <button class="text-white font-bold py-2 px-4 my-3 col-span-3" type="submit">
-          Check
+        <button class="text-white font-bold py-2 px-4 my-3 col-span-3 rounded-md" type="submit">
+          Search
         </button>
       </div>
     </form>

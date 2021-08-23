@@ -24,7 +24,7 @@
         rows="5"
       />
 
-      <button class="text-white font-bold py-2 px-4 mx-2 my-4" v-if="!isLoading" type="submit">
+      <button class="text-white font-bold py-2 px-4 mx-2 my-4 rounded-md" v-if="!isLoading" type="submit">
         Submit
       </button>
     </form>
