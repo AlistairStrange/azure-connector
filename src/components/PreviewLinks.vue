@@ -28,7 +28,8 @@ export default {
     // Copy to clipboard
     async function copy(val) {
       try {
-        await toClipboard(val);
+        // First replace html elements, then format each link on separate line
+        await toClipboard(val.replace(/(<([^>]+)>)/gi, "").replaceAll('.html', '.html \n\n'));
 
         // Trigger info message
         isCopied.value = true;
