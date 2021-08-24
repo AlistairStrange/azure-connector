@@ -32,7 +32,7 @@ export default {
 
   setup(props) {
     const ticketData = reactive({
-      id: 'WSBA-' + props.data.id,
+      id: props.data.id,
       sbu: props.data.sbu,
       title: props.data.title,
       state: props.data.state,
