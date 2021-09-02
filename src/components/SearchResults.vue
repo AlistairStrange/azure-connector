@@ -36,7 +36,7 @@ export default {
       sbu: props.data.sbu,
       title: props.data.title,
       state: props.data.state,
-      deadline: props.data.deadline.split("T")[0], // remove Time info from timestamp
+      deadline: props.data.deadline ? props.data.deadline.split("T")[0] : props.data.deadline, // remove Time info from timestamp
       priority: props.data.priority,
       sprint: props.data.sprint,
       brand: props.data.brand,
