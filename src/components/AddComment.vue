@@ -36,6 +36,8 @@
     <p v-if="failure" class="text-gray-500 font-light mx-2">
       Ooops, something went wrong
     </p>
+
+    <show-comments :id="comment.id"></show-comments>
   </div>
 </template>
 
@@ -43,9 +45,10 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 import LoadingWheel from "./LoadingWheel.vue";
+import ShowComments from "./ShowComments.vue";
 
 export default {
-  components: { LoadingWheel },
+  components: { LoadingWheel, ShowComments },
   props: {
     id: Number,
   },
