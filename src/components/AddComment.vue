@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full container my-2 px-4 bg-gray-200 py-2 rounded-md float-right">
+  <div class="w-full container my-2 px-4 bg-gray-100 py-2 rounded-md float-right">
     <p class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="hideComments">
       Close x
     </p>
@@ -7,7 +7,7 @@
       <!--Email  -->
       <label for="email" class="mb-2 mx-2 font-medium text-gray-500">From</label>
       <input
-        class="w-8/12 rounded-md bg-gray-100 block px-2 py-2 mx-2 mb-2 text-gray-400"
+        class="w-8/12 rounded-md bg-white block px-2 py-2 mx-2 mb-2 text-gray-400"
         placeholder="Enter your email address"
         name="email"
         type="email"
@@ -17,7 +17,7 @@
       <!-- Text -->
       <label for="comment" class="mb-2 mx-2 font-medium text-gray-500">Text</label>
       <textarea
-        class="w-11/12 rounded-md bg-gray-100 block px-2 mx-2 text-gray-400"
+        class="w-11/12 rounded-md bg-white block px-2 mx-2 text-gray-400"
         name="comment"
         v-model="comment.text"
         placeholder="Enter your comment"
@@ -37,7 +37,10 @@
       Ooops, something went wrong
     </p>
 
-    <show-comments :id="comment.id"></show-comments>
+    <!-- Separate comments section displaying all comments -->
+    <div>
+      <show-comments :id="comment.id"></show-comments>
+    </div>
   </div>
 </template>
 

@@ -1,30 +1,38 @@
 <template>
   <!-- Just display all comments - already filtered -->
   <div class="container">
-    <p>Hey, check the console for the comments</p>
-    <p>{{ ticket.id }}</p>
+    <h2 class="font-medium text-gray-500 text-xl my-2">Discussion</h2>
+    <!-- Looping through comments array -->
+    <div v-for="(value, index) in comments" v-bind:key="index" class="bg-white pl-2 py-2 my-2 rounded-md">
+      <p v-if="value.createdBy.uniqueName" class="font-medium text-gray-500">
+        {{ value.createdBy.uniqueName }}
+      </p>
 
-    <button class="text-white font-bold py-2 px-4 my-3 col-span-3 rounded-md" @click="getComments">
-      GET
-    </button>
+      <span v-if="value.text" class="font-light text-gray-500" v-html="value.text"> </span>
+    </div>
 
-    <span v-for="(value, index) in comments" v-bind:key="index">
-      <br />
-      <p>{{ value.createdBy.uniqueName }}</p>
-      <p v-html="value.text"></p>
+    <span v-if="comments.length == 0" class="font-light text-gray-500">
+      No comments available.
     </span>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+
+// import SingleComment from "./SingleComment.vue";
 
 export default {
   props: {
     id: Number,
   },
+  // components: { SingleComment },
   setup(props) {
+    onMounted(() => {
+      getComments();
+    });
+
     // Logic Apps hook for fetching all comments
     const apiUrl =
       "https://prod-49.westeurope.logic.azure.com:443/workflows/027ad0da0ef54f7cb25a6ed376ace107/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=E_RZgM1w7gP4NGxmG9m7rIHOXlF8CCRIdQ5Xn5jWxJY";
@@ -52,8 +60,6 @@ export default {
           console.log(response);
           if (response.status == 200 && response.data.data.totalCount > 0) {
             filterComments(response.data.data.comments);
-          } else {
-            comments.value = ["<div>No comments available</div>"];
           }
         })
         .catch((error) => {
@@ -113,12 +119,7 @@ export default {
       return mail;
     }
 
-    return { comments, ticket, getComments };
+    return { comments, ticket };
   },
 };
-
-// TBD
-// Loop through the response and remove the comments which are posted by
-// webstudio-reply or starts with reply token
-// Loading wheel
 </script>
