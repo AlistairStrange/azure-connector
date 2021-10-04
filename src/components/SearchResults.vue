@@ -14,18 +14,21 @@
   <add-comment-button @click="triggerComments" v-if="!showComments"> </add-comment-button>
 
   <!-- Comment Section -->
-  <add-comment @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></add-comment>
+  <!-- <add-comment @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></add-comment> -->
+  <show-comments @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></show-comments>
+
 </template>
 
 <script>
 import { reactive, ref } from "vue";
-import AddComment from "./AddComment.vue";
+// import AddComment from "./AddComment.vue";
 import SingleResult from "./SingleResult.vue";
 import PreviewLinks from "./PreviewLinks.vue";
 import AddCommentButton from "./AddCommentButton.vue";
+import ShowComments from "./ShowComments.vue";
 
 export default {
-  components: { AddComment, SingleResult, PreviewLinks, AddCommentButton },
+  components: {SingleResult, PreviewLinks, AddCommentButton, ShowComments },
   props: {
     data: Object,
   },

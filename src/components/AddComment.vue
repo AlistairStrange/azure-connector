@@ -1,8 +1,5 @@
 <template>
-  <div class="w-full container my-2 px-4 bg-gray-100 py-2 rounded-md float-right">
-    <p class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="hideComments">
-      Close x
-    </p>
+  <div class="w-full container my-2 bg-gray-100 py-2 rounded-md float-right">
     <form @submit.prevent="submitComment" id="comments-section">
       <!--Email  -->
       <label for="email" class="mb-2 mx-2 font-medium text-gray-500">From</label>
@@ -24,23 +21,21 @@
         rows="5"
       />
 
-      <button class="text-white font-bold py-2 px-4 mx-2 my-4 rounded-md" v-if="!isLoading" type="submit">
-        Submit
-      </button>
+      <div class="container w-6/12">
+        <button class="text-white font-bold py-2 px-4 mx-2 my-4 rounded-md float-left" v-if="!isLoading" type="submit">
+          Submit
+        </button>
+
+        <p v-if="success" class="text-green-500 font-light my-6 float-right">
+          Comment was successfully posted
+        </p>
+        <p v-if="failure" class="text-red-500 font-light my-6 float-right">
+          Ooops, something went wrong
+        </p>
+      </div>
+
+      <loading-wheel v-if="isLoading"></loading-wheel>
     </form>
-
-    <loading-wheel v-if="isLoading"></loading-wheel>
-    <p v-if="success" class="text-gray-500 font-light mx-2">
-      Comment was successfully posted
-    </p>
-    <p v-if="failure" class="text-gray-500 font-light mx-2">
-      Ooops, something went wrong
-    </p>
-
-    <!-- Separate comments section displaying all comments -->
-    <div>
-      <show-comments :id="comment.id"></show-comments>
-    </div>
   </div>
 </template>
 
@@ -48,14 +43,14 @@
 import { reactive, ref } from "vue";
 import axios from "axios";
 import LoadingWheel from "./LoadingWheel.vue";
-import ShowComments from "./ShowComments.vue";
+// import ShowComments from "./ShowComments.vue";
 
 export default {
-  components: { LoadingWheel, ShowComments },
+  components: { LoadingWheel },
   props: {
     id: Number,
   },
-  emits: ["hide-comments"],
+  emits: ["refresh-comments"],
   setup(props, { emit }) {
     var comment = reactive({
       email: null,
@@ -66,12 +61,9 @@ export default {
     var success = ref(false);
     var failure = ref(false);
     var isLoading = ref(false);
+
     const apiUrl =
       "https://prod-240.westeurope.logic.azure.com:443/workflows/1f4be62774a24ff49d688af3dc78dcaf/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=AFvlS67qtIoUDeTCJBs94t1ywQDNojG7BoKPfiCm-dQ";
-
-    function hideComments() {
-      emit("hide-comments");
-    }
 
     async function submitComment() {
       if (comment.email.length >= 5 && comment.text.length > 0) {
@@ -97,13 +89,14 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+        // Refresh the comments in parent ShowComments.vue component
+        emit("refresh-comments");
       }
     }
 
     return {
       comment,
       submitComment,
-      hideComments,
       isLoading,
       success,
       failure,
