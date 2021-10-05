@@ -48,7 +48,7 @@ import LoadingWheel from "./LoadingWheel.vue";
 export default {
   components: { LoadingWheel },
   props: {
-    id: Number,
+    id: String,
   },
   emits: ["refresh-comments"],
   setup(props, { emit }) {
