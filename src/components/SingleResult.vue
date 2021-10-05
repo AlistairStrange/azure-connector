@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watchEffect } from "vue";
 import useClipboard from "vue-clipboard3";
 
 export default {
@@ -42,7 +42,7 @@ export default {
     }
 
     // Hide Copied info message after 3 seconds
-    watch(() => {
+    watchEffect(() => {
       if (isCopied.value) {
         setTimeout(() => (isCopied.value = false), 2000);
       }
