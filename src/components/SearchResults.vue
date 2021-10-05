@@ -5,6 +5,7 @@
       v-bind:key="name"
       :label="name"
       :value="value ? value : 'n/a'"
+      :class="name"
     ></single-result>
 
     <!-- Preview links full col width -->
@@ -14,8 +15,7 @@
   <add-comment-button @click="triggerComments" v-if="!showComments"> </add-comment-button>
 
   <!-- Comment Section -->
-  <!-- <add-comment @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></add-comment> -->
-  <show-comments @hide-comments="triggerComments" v-if="showComments" :id="ticketData.id"></show-comments>
+  <show-comments v-if="showComments" :id="ticketData.id"></show-comments>
 
 </template>
 
@@ -35,7 +35,7 @@ export default {
 
   setup(props) {
     const ticketData = reactive({
-      id: props.data.id,
+      id: String(props.data.id),
       sbu: props.data.sbu,
       title: props.data.title,
       state: props.data.state,

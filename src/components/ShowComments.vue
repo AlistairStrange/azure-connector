@@ -1,14 +1,14 @@
 <template>
-  <!-- Just display all comments - already filtered -->
-  <div class="w-full container my-2 px-4 bg-gray-100 py-2 rounded-md float-right">
-    <p class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="hideComments">
+  <add-comment-button v-if="isHidden" @click="toggleComments"></add-comment-button>
+  <div class="w-full container my-2 px-4 bg-gray-100 py-2 rounded-md float-right" :class="isHidden ? 'hidden' : ''">
+    <p v-if="!isHidden" class="text-gray-400 hover:text-gray-500 float-right cursor-pointer" @click="toggleComments">
       Close x
     </p>
     <!-- Add new comment section -->
     <h2 class="font-medium text-gray-500 text-xl">Post a comment</h2>
     <add-comment :id="ticket.id" @refresh-comments="getComments"></add-comment>
 
-    <h2 class="font-medium text-gray-500 text-xl my-2">Discussion</h2>
+    <h2 class="font-medium text-gray-500 text-xl my-2">Discussion ({{ comments.length }})</h2>
     <loading-wheel v-if="isLoading"></loading-wheel>
 
     <!-- Looping through comments array -->
@@ -36,16 +36,17 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import AddComment from "./AddComment.vue";
 import LoadingWheel from "./LoadingWheel.vue";
+import AddCommentButton from "./AddCommentButton.vue";
 // import SingleComment from "./SingleComment.vue";
 
 export default {
   props: {
-    id: Number,
+    id: String,
   },
-  components: { AddComment, LoadingWheel },
-  emits: ["hide-comments"],
+  components: { AddComment, AddCommentButton, LoadingWheel },
+  // emits: ["hide-comments"],
   // components: { SingleComment },
-  setup(props, { emit }) {
+  setup(props) {
     onMounted(() => {
       getComments();
     });
@@ -66,6 +67,8 @@ export default {
     var comments = ref([]);
     // isLoading toggle
     var isLoading = ref(true);
+    // Toggle Comments on & off via css
+    var isHidden = ref(false);
 
     // Fetch all comments for specific Ticket ID stored in ticket.id
     async function getComments() {
@@ -73,7 +76,6 @@ export default {
       // Empty the comments array
       comments.value = [];
 
-      console.log(ticket.id);
       await axios
         .post(apiUrl, ticket, {
           headers: {
@@ -81,8 +83,8 @@ export default {
           },
         })
         .then((response) => {
-          console.log("Complete response:");
-          console.log(response);
+          // console.log("Complete response:");
+          // console.log(response);
           if (response.status == 200 && response.data.data.totalCount > 0) {
             filterComments(response.data.data.comments);
           }
@@ -97,8 +99,8 @@ export default {
     // This function is called when success response received from Logic Apps
     function filterComments(data) {
       // Remove unnecessary comments and return adjust object/array
-      console.log("filter function:");
-      console.log(data);
+      // console.log("filter function:");
+      // console.log(data);
 
       data.forEach((comment) => {
         if (isReply(comment.text)) {
@@ -146,11 +148,12 @@ export default {
       return mail;
     }
 
-    function hideComments() {
-      emit("hide-comments");
+    function toggleComments() {
+      // emit("hide-comments");
+      isHidden.value = !isHidden.value;
     }
 
-    return { comments, ticket, hideComments, getComments, isLoading };
+    return { comments, ticket, toggleComments, isHidden, getComments, isLoading };
   },
 };
 </script>
